@@ -1,8 +1,6 @@
 import Pacman from "./Pacman.js";
 import Tilemap from "./Tilemap.js";
-
-const frameRate = 60;
-const oneSec = 1000; //in msec
+import { oneSec,frameRate } from "./Constants.js"
 
 window.onload = ()=>{
     const surf = document.getElementById("gameSurf");
@@ -16,7 +14,7 @@ window.onload = ()=>{
     const gameLoop = () => {
         console.log("Game loop running...");
         tileSystem.draw();
-        pacman.draw();
+        pacman.work();
     }
 
     setInterval(gameLoop, oneSec/frameRate);

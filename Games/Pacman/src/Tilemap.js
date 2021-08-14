@@ -1,16 +1,19 @@
 
  
-import { tileSize,WALL,ORB1,up,down,right,left,velocity } from "./Constants.js";
+import { tileSize,WALL,ORB1,up,down,right,left,velocity, ORB2, NOITEM } from "./Constants.js";
 
 export default class Tilemap{
     constructor(ctx){
         this.ctx = ctx;
 
         this.orb1 = new Image();
-        this.orb1.src = "../assets/orb.png"
+        this.orb1.src = "../assets/orb.png";
 
         this.wall = new Image();
-        this.wall.src = "../assets/wall.png"
+        this.wall.src = "../assets/wall.png";
+
+        this.noItem = new Image();
+        this.noItem.src = "../assets/empty.png";
     }
 
     visualGrid = [
@@ -29,30 +32,39 @@ export default class Tilemap{
         [1,1,1,1,1,1,1,1,1,1,1,1,1]
     ]
 
+    //check if anything edible is present
+    edibleAt(i,j){
+        switch(this.visualGrid[i][j]){
+            case ORB1:
+                return ORB1;
+            case ORB2:
+                return ORB2;
+            default:
+                return null;
+        }
+    }
+
     //collission checking function
-    willCollideWith(entityID,x,y,toMoveDir){
+    willCollideWith(entityID,j,i,toMoveDir){
         switch(toMoveDir){
             case up:
-                y -= velocity;
+                i -= velocity;
                 break;
             case down:
-                y += velocity;
+                i += velocity;
                 break;
             case left:
-                x -= velocity;
+                j -= velocity;
                 break;
             case right:
-                x += velocity;
+                j += velocity;
                 break;
             default:
                 console.log("No way this is possible...");
                 break;
         }
-
-        let j = this.worldToGrid(x);
-        let i = this.worldToGrid(y);
-        alert("i coord " + i);
-        alert("j coord " + j)
+        //alert("i coord " + i);
+        //alert("j coord " + j)
         return this.visualGrid[i][j] === entityID;
     }
 
@@ -78,10 +90,6 @@ export default class Tilemap{
         return k*tileSize;
     }
 
-    worldToGrid = (k) => {
-        return Math.floor(k/32);
-    }
-
     //private method
     #drawTile(i,j,aTile){
         this.ctx.clearRect(this.gridToWorld(j),this.gridToWorld(i),tileSize,tileSize);
@@ -92,6 +100,10 @@ export default class Tilemap{
 
             case ORB1:
                 this.ctx.drawImage(this.orb1,this.gridToWorld(j),this.gridToWorld(i))
+                break;
+
+            case NOITEM:
+                this.ctx.drawImage(this.noItem,this.gridToWorld(j),this.gridToWorld(i));
                 break;
         }
     }
