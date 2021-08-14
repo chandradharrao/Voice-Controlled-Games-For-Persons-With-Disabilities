@@ -8,7 +8,11 @@ export const tileSize=32;
 export const halfTileSize = 16;
 export const velocity=1;
 
+export const difficulty=1;
+export const enemyVelocity=1;
+
 export const frameRate = 60;
+export const timeForFrame = 1/frameRate;
 export const oneSec = 1000; //in msec
 
 export const WALL = 1;

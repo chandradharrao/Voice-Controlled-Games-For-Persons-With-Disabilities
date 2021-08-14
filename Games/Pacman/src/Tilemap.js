@@ -44,7 +44,7 @@ export default class Tilemap{
         }
     }
 
-    //collission checking function
+    //collission checking function given current index and toMove direction
     willCollideWith(entityID,j,i,toMoveDir){
         switch(toMoveDir){
             case up:
