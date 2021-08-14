@@ -1,9 +1,9 @@
-import { tileSize,up,down,left,right,keycodes,velocity, WALL, oneSec,halfTileSize, NOITEM } from "./Constants.js";
+import { tileSize,up,down,left,right,keycodes,velocity, WALL, oneSec,halfTileSize, NOITEM, ORB1, powerdot, powerdotNil, powerdotHigh, powerdotLow, powerdotDangling, powerdotValidity, MAXLIVES } from "./Constants.js";
 
 export default class Pacman{
     //x,y - world pos
-    //i,j - grid indices
-    constructor(ctx,i,j,tileMap){
+    //i,j - (row#,col#) - grid indices
+    constructor(ctx,i,j,tileMap,uictx,uiSurf){
         //world pos
         this.i = i;
         this.j = j;
@@ -12,6 +12,10 @@ export default class Pacman{
         //for drawing purpose
         //console.log("Pacman ctx " + ctx);
         this.ctx = ctx;
+        this.uiSurf = uiSurf;
+        this.uictx = uictx;
+        //height of surface to hold hearts
+        this.uiSurf.height = tileSize;
         this.tileMap = tileMap;
 
         //for animation purpose
@@ -34,6 +38,29 @@ export default class Pacman{
 
         //audio files
         //this.munch = new Audio("../assets/munch.wav");
+        this.powerup = new Audio("../assets/powerdot.wav");
+
+        //when pacman has eaten power dot,it scares the enemies
+        this.powerdotState = powerdotNil;
+
+        //lives avaiable
+        this.lives = 3;
+        this.noItem = new Image();
+        this.noItem.src = "../assets/empty.png";
+        //width of surface to hold 3 hearts
+        this.uiSurf.width = this.lives*tileSize;
+        this.heart = new Image();
+        this.heart.src = "../assets/heart.png";
+        this.isGameOver = false;     
+    }
+
+
+    //upon colliding with pacman
+    handleDamage(){
+        this.lives--;
+        if(this.lives === 0){
+            this.isGameOver = true;
+        }
     }
 
      //moving to a new dir is allowed only if pacman is not colliding.
@@ -186,13 +213,43 @@ export default class Pacman{
     //main worker function for the PACMAN character
     work(){
         //check if orb is present to be eaten
-        if(this.tileMap.edibleAt(this.i,this.j)!=null){
+        let theTile = this.tileMap.edibleAt(this.i,this.j);
+        if(theTile!=null){
+            //make the edible blank
             this.tileMap.visualGrid[this.i][this.j] = NOITEM;
-            this.score++;
+            //increment the score
+            switch(theTile){
+                case ORB1:
+                    // this.munch.play();
+                    this.score++;
+                    break;
+                case powerdot:
+                    //this.powerup.play();
+                    this.powerdotState = powerdotHigh;
+                    //after 3 seconds,powerdot starts to become low effect
+                    setTimeout(() => {
+                        this.powerdotState = powerdotLow;
+                    }, oneSec*powerdotDangling);
+                    //after 5 seconds powerdot expires
+                    setTimeout(() => {
+                        this.powerdotState = powerdotNil;
+                    }, oneSec*powerdotValidity);
+                    this.score+=5;
+                    break;
+            }
             //alert("Score is " + this.score);
-           // this.munch.play();
         }
         //draw the pacman
         this.#draw();
+
+        //reset ui ctx
+        for(let i = 0;i<MAXLIVES;i++){
+            this.uictx.drawImage(this.noItem,i*tileSize,0);
+        }
+
+        //draw the hearts
+        for(let i = 0;i<this.lives;i++){
+            this.uictx.drawImage(this.heart,i*tileSize,0);
+        }
     }
 }

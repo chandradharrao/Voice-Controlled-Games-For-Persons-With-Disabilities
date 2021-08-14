@@ -1,6 +1,4 @@
-
- 
-import { tileSize,WALL,ORB1,up,down,right,left,velocity, ORB2, NOITEM } from "./Constants.js";
+import { tileSize,WALL,ORB1,up,down,right,left,velocity, NOITEM, powerdot,oneSec } from "./Constants.js";
 
 export default class Tilemap{
     constructor(ctx){
@@ -8,6 +6,17 @@ export default class Tilemap{
 
         this.orb1 = new Image();
         this.orb1.src = "../assets/orb.png";
+
+        this.powerdots = []
+        this.currPowerdotFrame = 0;
+        for(let i = 1;i<=4;i++){
+            let powerdot = new Image();
+            powerdot.src = `../assets/powerdot-${i}.png`
+            this.powerdots.push(powerdot)
+        }
+        setInterval(() => {
+            this.currPowerdotFrame = (this.currPowerdotFrame+1)%4;
+        }, oneSec/5);
 
         this.wall = new Image();
         this.wall.src = "../assets/wall.png";
@@ -20,25 +29,29 @@ export default class Tilemap{
         [1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,1,1,1,1,1,1,1,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,2,0,2,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,2,0,0,0,1],
+        [1,0,0,2,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,1,1,1,1,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,1,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,2,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,0,0,0,0,2,0,0,0,1],
         [1,0,1,0,0,0,0,0,0,0,0,0,1],
         [1,0,1,0,0,0,0,0,1,1,1,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,2,0,2,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1]
     ]
+
+    #givePowerDotFrame(){
+        return this.powerdots[this.currPowerdotFrame];
+    }
 
     //check if anything edible is present
     edibleAt(i,j){
         switch(this.visualGrid[i][j]){
             case ORB1:
                 return ORB1;
-            case ORB2:
-                return ORB2;
+            case powerdot:
+                return powerdot;
             default:
                 return null;
         }
@@ -86,6 +99,7 @@ export default class Tilemap{
         }
     }
 
+    //to convert row,col to worldPos,do x=j*32 and y = i*32
     gridToWorld(k){
         return k*tileSize;
     }
@@ -100,6 +114,10 @@ export default class Tilemap{
 
             case ORB1:
                 this.ctx.drawImage(this.orb1,this.gridToWorld(j),this.gridToWorld(i))
+                break;
+
+            case powerdot:
+                this.ctx.drawImage(this.#givePowerDotFrame(),this.gridToWorld(j),this.gridToWorld(i));
                 break;
 
             case NOITEM:

@@ -1,13 +1,16 @@
-import { tileSize,oneSec, WALL,enemyVelocity,up,down,left,right, timeForFrame } from "./Constants.js";
+import { tileSize,oneSec, WALL,enemyVelocity,up,down,left,right, timeForFrame, powerdotHigh, powerdotLow,powerdotNil } from "./Constants.js";
 
 
 export default class Enemy {
-    constructor(i,j,tileMap,ctx){
+    constructor(i,j,tileMap,ctx,pacman){
+        //to convert row,col to worldPos,do x=j*32 and y = i*32
         this.i = i;
         this.j = j;
         this.tileMap = tileMap;
         this.ctx = ctx;
         this.skipCounter = 0;
+        //ref to the pacman player
+        this.pacman = pacman;
 
         //behaviour state
         this.currBehState = 0;
@@ -19,9 +22,27 @@ export default class Enemy {
         //animation state
         this.currAnimState = 0;
         this.states = this.#loadImages();
+        let powerdotLowCounter = 0;
         setInterval(() => {
-            this.currAnimState = (this.currAnimState+1)%4;
+            //change color of enemy based on pacman's powerdot consumption state 
+            switch(pacman.powerdotState){
+                case powerdotNil:
+                    this.currAnimState = (this.currAnimState+1)%4;
+                    break;
+                case powerdotHigh:
+                    this.currAnimState = 4;
+                    break;
+                case powerdotLow:
+                    this.currAnimState  = (4 + powerdotLowCounter);
+                    //console.log(this.currAnimState);
+                    powerdotLowCounter = (powerdotLowCounter+1)%2;
+                    break;
+            }
         }, oneSec/5);
+    }
+
+    didCollideWithPacman(){
+        return this.pacman.i === this.i && this.pacman.j == this.j;
     }
 
     //random value between min and max
