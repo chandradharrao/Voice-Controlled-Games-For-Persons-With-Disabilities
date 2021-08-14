@@ -33,6 +33,9 @@ window.onload = ()=>{
     let playOnce = true;
     let timeBetwenLastCollission = infinite;
 
+    //eating enemy sound
+    let eatEnemy = new Audio("../assets/eatenemy.mp3");
+
     for(let i = 0;i<numEnemies;i++){
         //generate some random non intersecting positions for enemy
         let enemy = new Enemy(4,3,tileSystem,ctx,pacman);
@@ -61,6 +64,7 @@ window.onload = ()=>{
                 //if powerdot is active,pacman eats enemy
                 else if(enemies[i].didCollideWithPacman() && pacman.powerdotState !== powerdotNil){
                     pacman.score += 10;
+                    eatEnemy.play();
                 }
                 //if not eaten let it stay
                 else{
@@ -70,9 +74,16 @@ window.onload = ()=>{
             //discrard enemy only when its is eaten by pacman.Hence dont include in temp array
             enemies = temp 
 
+            //winning
+            if(!pacman.isGameOver && enemies.length===0){
+                //draw game winnig screen
+            }
+
+            //loosing
             if(pacman.isGameOver){
                 if(playOnce){
                     goSound.play();
+                    //draw game over screen
                     playOnce = false;
                 }
             }
