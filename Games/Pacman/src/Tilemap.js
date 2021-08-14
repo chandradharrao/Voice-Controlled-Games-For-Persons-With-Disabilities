@@ -1,7 +1,6 @@
-const WALL = 1;
-const ORB1 = 0;
-const PACMAN = 2;   
-import { tileSize } from "./Constants.js";
+
+ 
+import { tileSize,WALL,ORB1,up,down,right,left,velocity } from "./Constants.js";
 
 export default class Tilemap{
     constructor(ctx){
@@ -30,6 +29,33 @@ export default class Tilemap{
         [1,1,1,1,1,1,1,1,1,1,1,1,1]
     ]
 
+    //collission checking function
+    willCollideWith(entityID,x,y,toMoveDir){
+        switch(toMoveDir){
+            case up:
+                y -= velocity;
+                break;
+            case down:
+                y += velocity;
+                break;
+            case left:
+                x -= velocity;
+                break;
+            case right:
+                x += velocity;
+                break;
+            default:
+                console.log("No way this is possible...");
+                break;
+        }
+
+        let j = this.worldToGrid(x);
+        let i = this.worldToGrid(y);
+        alert("i coord " + i);
+        alert("j coord " + j)
+        return this.visualGrid[i][j] === entityID;
+    }
+
     setSurfSize(surf){
         surf.width = this.visualGrid[0].length*tileSize;
         surf.height = this.visualGrid.length*tileSize;
@@ -52,8 +78,13 @@ export default class Tilemap{
         return k*tileSize;
     }
 
+    worldToGrid = (k) => {
+        return Math.floor(k/32);
+    }
+
     //private method
     #drawTile(i,j,aTile){
+        this.ctx.clearRect(this.gridToWorld(j),this.gridToWorld(i),tileSize,tileSize);
         switch(aTile){
             case WALL:
                 this.ctx.drawImage(this.wall,this.gridToWorld(j),this.gridToWorld(i))
