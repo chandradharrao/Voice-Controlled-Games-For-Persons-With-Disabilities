@@ -1,4 +1,4 @@
-import { tileSize,up,down,left,right,keycodes,velocity, WALL, oneSec,halfTileSize, NOITEM, ORB1, powerdot, powerdotNil, powerdotHigh, powerdotLow, powerdotDangling, powerdotValidity, MAXLIVES } from "./Constants.js";
+import { tileSize,up,down,left,right,keycodes,velocity, WALL, oneSec,halfTileSize, NOITEM, ORB1, powerdot, powerdotNil, powerdotHigh, powerdotLow, powerdotDangling, powerdotValidity, MAXLIVES, enemyVelocity } from "./Constants.js";
 
 export default class Pacman{
     //x,y - world pos
@@ -45,21 +45,28 @@ export default class Pacman{
 
         //lives avaiable
         this.lives = 3;
+        //to redraw uictx
         this.noItem = new Image();
         this.noItem.src = "../assets/empty.png";
         //width of surface to hold 3 hearts
         this.uiSurf.width = this.lives*tileSize;
         this.heart = new Image();
         this.heart.src = "../assets/heart.png";
-        this.isGameOver = false;     
+        this.isGameOver = false;
+        //hurt sound
+        this.hurt = new Audio("../assets/hurt.wav")    ; 
     }
 
 
     //upon colliding with pacman
     handleDamage(){
-        this.lives--;
-        if(this.lives === 0){
-            this.isGameOver = true;
+        //no hurt when power dot is active
+        if(this.powerdotState !== powerdotHigh && this.powerdotState !== powerdotLow){
+            this.lives--;
+            this.hurt.play();
+            if(this.lives === 0){
+                this.isGameOver = true;
+            }
         }
     }
 

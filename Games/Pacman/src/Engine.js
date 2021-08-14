@@ -1,6 +1,6 @@
 import Pacman from "./Pacman.js";
 import Tilemap from "./Tilemap.js";
-import { oneSec,frameRate,difficulty, timeForFrame, infinite } from "./Constants.js"
+import { oneSec,frameRate,difficulty, timeForFrame, infinite, powerdotNil } from "./Constants.js"
 import Enemy from "./Enemy.js";
 
 window.onload = ()=>{
@@ -43,24 +43,43 @@ window.onload = ()=>{
     tileSystem.setSurfSize(surf);
 
     const gameLoop = () => {
-        console.log("Game loop running...");
-        tileSystem.draw();
-        pacman.work();
-        for(let i = 0;i<numEnemies;i++){
-            enemies[i].work();
-            if(enemies[i].didCollideWithPacman() && timeBetwenLastCollission >= 1){
-                //alert("Life gone!");
-                timeBetwenLastCollission = 0;
-                pacman.handleDamage();
+        if(pacman.isGameOver == false){
+            console.log("Game loop running...");
+            tileSystem.draw();
+            pacman.work();
+            //temp array
+            let temp = [];
+            for(let i = 0;i<enemies.length;i++){
+                enemies[i].work();
+                //if powerdot is not active then enemy eats pacman
+                if(enemies[i].didCollideWithPacman() && pacman.powerdotState === powerdotNil && timeBetwenLastCollission >= 1){
+                    temp.push(enemies[i]);
+                    //alert("Life gone!");
+                    timeBetwenLastCollission = 0;
+                    pacman.handleDamage();
+                }
+                //if powerdot is active,pacman eats enemy
+                else if(enemies[i].didCollideWithPacman() && pacman.powerdotState !== powerdotNil){
+                    pacman.score += 10;
+                }
+                //if not eaten let it stay
+                else{
+                    temp.push(enemies[i]);
+                }
             }
-        }
-        if(pacman.isGameOver){
-            if(playOnce){
-                goSound.play();
-                playOnce = false;
+            //discrard enemy only when its is eaten by pacman.Hence dont include in temp array
+            enemies = temp 
+
+            if(pacman.isGameOver){
+                if(playOnce){
+                    goSound.play();
+                    playOnce = false;
+                }
             }
+            timeBetwenLastCollission += timeForFrame;
+        }else{
+            ctx.drawImage()
         }
-        timeBetwenLastCollission += timeForFrame;
     }
 
     setInterval(gameLoop, oneSec/frameRate);
