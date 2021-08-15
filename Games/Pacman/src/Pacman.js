@@ -40,6 +40,7 @@ export default class Pacman{
 
         //score counter
         this.score = 0;
+        this.scoreTag = document.getElementById("score");
 
         //audio files
         //this.munch = new Audio("../assets/munch.wav");
@@ -51,8 +52,8 @@ export default class Pacman{
         //lives avaiable
         this.lives = 3;
         //to redraw uictx
-        this.noItem = new Image();
-        this.noItem.src = "../assets/transparent.png";
+        this.whiteHeart = new Image();
+        this.whiteHeart.src = "../assets/whiteheart.png";
         //width of surface to hold 3 hearts
         this.uiSurf.width = this.lives*tileSize*2;
         this.heart = new Image();
@@ -268,12 +269,13 @@ export default class Pacman{
 
         //reset ui ctx
         for(let i = 0;i<MAXLIVES;i++){
-            this.uictx.drawImage(this.noItem,i*tileSize*2,0);
+            this.uictx.drawImage(this.whiteHeart,i*tileSize*2,0);
         }
 
         //draw the hearts
         for(let i = 0;i<this.lives;i++){
             this.uictx.drawImage(this.heart,i*tileSize*2,0);
         }
+        this.scoreTag.innerHTML = `Score:${this.score}`;
     }
 }
