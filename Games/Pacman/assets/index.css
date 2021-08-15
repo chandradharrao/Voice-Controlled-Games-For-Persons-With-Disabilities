@@ -31,6 +31,20 @@ body{
     top:55%;
 }
 
+#mike-container{
+    position: absolute;
+    left:80%;
+    top:86%;
+    border:3px solid whitesmoke;
+    border-radius: 100%;
+    padding: 1%;
+}
+
+#mike{
+    height: 55px;
+    width: 55px;
+}
+
 #uiSurf{
     border: 2px solid whitesmoke;
 }
@@ -54,7 +68,7 @@ body{
     left:68%;
     top:5%;
     font-size: medium;
-    padding: 5%;
+    padding: 3%;
     border:1px solid whitesmoke
 }
 
@@ -77,6 +91,18 @@ h3{
     }
 
     #about{
+        display: none;
+    }
+
+    #todo{
+        display: none;
+    }
+
+    #credits{
+        display: none;
+    }
+
+    #mike-container{
         display: none;
     }
 }

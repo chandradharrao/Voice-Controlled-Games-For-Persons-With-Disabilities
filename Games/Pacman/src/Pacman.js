@@ -49,6 +49,7 @@ export default class Pacman{
 
         //lives avaiable
         this.lives = 3;
+        this.isFirstTime = true;
         //to redraw uictx
         this.whiteHeart = new Image();
         this.whiteHeart.src = "../assets/whiteheart.png";
@@ -58,7 +59,7 @@ export default class Pacman{
         this.heart.src = "../assets/heart.png";
         this.isGameOver = false;
         //hurt sound
-        this.hurt = new Audio("../assets/hurt.wav")    ; 
+        this.hurt = new Audio("../assets/hurt.wav") ; 
     }
 
 
@@ -243,10 +244,26 @@ export default class Pacman{
 
     //main worker function for the PACMAN character
     work(){
+        if(this.isFirstTime){
+            //draw all hearts
+            for(let i = 0;i<MAXLIVES;i++){
+                this.uictx.drawImage(this.heart,i*tileSize*2,0);
+            }
+            this.isFirstTime = false;
+        }
         //speech command processing for pacman
         //console.log("Input speech commands " + JSON.stringify(this.inputCommands));
         //input commands given by voice
         if(this.inputCommands.length !== 0){
+            //process inpt cmd,disable mike 
+            document.getElementById("mike").src = "../assets/transparent.png";
+            //console.log("Mike Disabled to " + document.getElementById("mike").src);
+            //alert(document.getElementById("mike").src);
+            //after moving,listen for next input cmd,enable mike
+            setTimeout(() => {
+                document.getElementById("mike").src = "../assets/mike.png";
+            }, oneSec/2);
+
             let toProcessCmd = this.inputCommands.shift();
             this.#movementSwitch(toProcessCmd);
         }

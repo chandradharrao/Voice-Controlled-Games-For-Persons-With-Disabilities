@@ -1,6 +1,6 @@
 import Pacman from "./Pacman.js";
 import Tilemap from "./Tilemap.js";
-import { oneSec,frameRate,difficulty, timeForFrame, infinite, powerdotNil, restartTime, youLoose, youWin, keycodes, cmds, speedReducer } from "./Constants.js"
+import { oneSec,frameRate,difficulty, timeForFrame, infinite, powerdotNil, restartTime, youLoose, youWin, keycodes, cmds } from "./Constants.js"
 import Enemy from "./Enemy.js";
 import {speechEngine} from "./SpeechEngine.js"
 
@@ -52,6 +52,8 @@ window.onload = ()=>{
         if(event.keyCode === keycodes.p){
             //play!
             playSettings.start = true;
+            //disable all instructions and extras
+            disableExtras();
         }
     }
     //attach event listener for start of game
@@ -73,6 +75,13 @@ window.onload = ()=>{
     //resize the canvas according to designed map
     tileSystem.setSurfSize(surf);
 
+    //disable extras
+    const disableExtras = ()=>{
+        document.getElementById("howto").style.display = 'none';
+        document.getElementById("about").style.display = 'none';
+        document.getElementById("todo").style.display = 'none';
+    }
+
     //recognize play in the beggening
     const singleWordMatch = ()=>{
         if(inptCmds.length > 0){
@@ -81,7 +90,11 @@ window.onload = ()=>{
             if(top === cmds.play){
                 //alert("You can play now!");
                 playSettings.start = true;
-                speedReducer *= 4;
+                //disable extras
+                disableExtras();
+                for(let i = 0;i<enemies.length;i++){
+                    enemies[i].speedReducer *= 4
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-import { tileSize,oneSec, WALL,enemyVelocity,up,down,left,right, timeForFrame, powerdotHigh, powerdotLow,powerdotNil, dim, speedReducer } from "./Constants.js";
+import { tileSize,oneSec, WALL,enemyVelocity,up,down,left,right, timeForFrame, powerdotHigh, powerdotLow,powerdotNil, dim } from "./Constants.js";
 
 
 export default class Enemy {
@@ -9,6 +9,8 @@ export default class Enemy {
         this.tileMap = tileMap;
         this.ctx = ctx;
         this.skipCounter = 0;
+        this.speedReducer = 20;
+
         //ref to the pacman player
         this.pacman = pacman;
 
@@ -67,7 +69,7 @@ export default class Enemy {
     work(){
         //move enemy based on the randomly changing direction
         //if movement in currDir doesnt make it collide
-        if(this.skipCounter%speedReducer==0 && !this.tileMap.willCollideWith(WALL,this.j,this.i,this.currMovDir)){
+        if(this.skipCounter%this.speedReducer==0 && !this.tileMap.willCollideWith(WALL,this.j,this.i,this.currMovDir)){
             let I = this.i;
             let J = this.j;
             //alert(`row:${I},col:${J}`)
@@ -100,7 +102,7 @@ export default class Enemy {
             
         }
         //move once in 20 frames
-        this.skipCounter = (this.skipCounter+1)%speedReducer;
+        this.skipCounter = (this.skipCounter+1)%this.speedReducer;
 
         //manual timer to change dir
         this.dirTimer -= timeForFrame;
