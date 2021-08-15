@@ -7,7 +7,7 @@ export default class Pacman{
     constructor(ctx,i,j,tileMap,uictx,uiSurf){
         //start speech recognition engine
         this.inputCommands = [];
-        speechEngine(this.inputCommands);
+        //speechEngine(this.inputCommands);
 
         //world pos
         this.i = i;

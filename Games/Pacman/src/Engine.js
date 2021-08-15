@@ -1,6 +1,6 @@
 import Pacman from "./Pacman.js";
 import Tilemap from "./Tilemap.js";
-import { oneSec,frameRate,difficulty, timeForFrame, infinite, powerdotNil } from "./Constants.js"
+import { oneSec,frameRate,difficulty, timeForFrame, infinite, powerdotNil, restartTime, youLoose, youWin } from "./Constants.js"
 import Enemy from "./Enemy.js";
 
 window.onload = ()=>{
@@ -19,7 +19,7 @@ window.onload = ()=>{
     //create an array of enemies
     let enemies = [];
     //config for each difficulty level
-    let numEnemies = 1;
+    let numEnemies;
     let health = 0;
     //set config
     switch(difficulty){
@@ -39,7 +39,11 @@ window.onload = ()=>{
 
     for(let i = 0;i<numEnemies;i++){
         //generate some random non intersecting positions for enemy
-        let enemy = new Enemy(4,3,tileSystem,ctx,pacman);
+        let spawnableIndices = tileSystem.queryNonWalls({i:pacman.i,j:pacman.j});
+        let spawnIndex= spawnableIndices[Math.floor(Math.random()*spawnableIndices.length)];
+        console.log(JSON.stringify(spawnIndex));
+        
+        let enemy = new Enemy(spawnIndex.spawnI,spawnIndex.spawnJ,tileSystem,ctx,pacman);
         enemies.push(enemy);
     }
 
@@ -81,6 +85,7 @@ window.onload = ()=>{
             //winning
             if(!pacman.isGameOver && enemies.length===0){
                 //draw game winnig screen
+                newScreen(ctx,youWin);
             }
 
             //loosing
@@ -93,9 +98,23 @@ window.onload = ()=>{
             }
             timeBetwenLastCollission += timeForFrame;
         }else{
-            ctx.drawImage()
+            //draw gameover screen
+            newScreen(ctx,youLoose);
+
+            //restart after 5 seconds
+            setTimeout(() => {
+                window.location.reload();
+            }, oneSec*restartTime);
         }
     }
 
-    setInterval(gameLoop, oneSec/frameRate);
+    let gameThread = setInterval(gameLoop, oneSec/frameRate);
+
+    const newScreen = (aCtx,txt)=>{
+        aCtx.fillStyle = "black";
+        aCtx.fillRect(0,surf.height/2,surf.width,96);
+        aCtx.font = "40px comic sans";
+        aCtx.fillStyle = "white";
+        aCtx.fillText(txt,10,surf.height*0.65);
+    }
 }

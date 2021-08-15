@@ -16,6 +16,7 @@ export const MAXLIVES = 3;
 export const frameRate = 60;
 export const timeForFrame = 1/frameRate;
 export const oneSec = 1000; //in msec
+export const restartTime = 5;
 
 export const WALL = 1;
 export const ORB1 = 0;
@@ -42,3 +43,6 @@ export const cmds = {
     'left':keycodes.a,
     'right':keycodes.d
 };
+
+export const youLoose="GameOver..Try Again in ";
+export const youWin="You Win!";

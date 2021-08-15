@@ -41,6 +41,20 @@ export default class Tilemap{
         [1,1,1,1,1,1,1,1,1,1,1,1,1]
     ]
 
+    //return all non wall coordinates
+    queryNonWalls(toExcludeIndex=null){
+        let nonWalls = [];
+        for(let i = 0;i<this.visualGrid.length;i++){
+            for(let j = 0;j<this.visualGrid[i].length;j++){
+                if(toExcludeIndex!==null && toExcludeIndex.i !== i && toExcludeIndex.j !== j){
+                    let aTile = this.visualGrid[i][j];
+                    if(aTile !== WALL) nonWalls.push({spawnI:i,spawnJ:j});
+                }
+            }
+        }
+        return nonWalls;
+    }
+
     #givePowerDotFrame(){
         return this.powerdots[this.currPowerdotFrame];
     }
