@@ -7,8 +7,9 @@ export const right=0;
 export const tileSize=32;
 export const halfTileSize = 16;
 export const velocity=1;
+export const dim = 13;
 
-export const difficulty=1;
+export const difficulty=2;
 export const enemyVelocity=1;
 export const infinite=Math.pow(10, 1000);
 export const MAXLIVES = 3;
@@ -45,4 +46,4 @@ export const cmds = {
 };
 
 export const youLoose="GameOver..Try Again in ";
-export const youWin="You Win!";
+export const youWin="You Win! Play Again?";

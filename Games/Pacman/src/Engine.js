@@ -20,12 +20,14 @@ window.onload = ()=>{
     let enemies = [];
     //config for each difficulty level
     let numEnemies;
-    let health = 0;
     //set config
     switch(difficulty){
         case 1:
-            numEnemies = 1;
-            health = 1;
+            numEnemies = 3;
+            break;
+
+        case 2:
+            numEnemies = 5;
             break;
     }
 

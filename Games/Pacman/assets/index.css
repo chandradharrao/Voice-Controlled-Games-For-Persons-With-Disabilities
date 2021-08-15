@@ -1,7 +1,18 @@
+body{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-image: url("../assets/bgImg.jpg");
+}
+
+h1{
+    text-align: center;
+    font-family: comic sans MS;
+    color: aliceblue;
+}
+
 #gameSurf{
     background-color: rgb(39,39,54);
 }
 
-#uiSurf{
-    background-color: rgb(39,39,54);
-}

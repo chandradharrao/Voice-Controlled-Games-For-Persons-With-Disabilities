@@ -20,7 +20,7 @@ export default class Pacman{
         this.uiSurf = uiSurf;
         this.uictx = uictx;
         //height of surface to hold hearts
-        this.uiSurf.height = tileSize;
+        this.uiSurf.height = tileSize*2;
         this.tileMap = tileMap;
 
         //for animation purpose
@@ -52,9 +52,9 @@ export default class Pacman{
         this.lives = 3;
         //to redraw uictx
         this.noItem = new Image();
-        this.noItem.src = "../assets/empty.png";
+        this.noItem.src = "../assets/transparent.png";
         //width of surface to hold 3 hearts
-        this.uiSurf.width = this.lives*tileSize;
+        this.uiSurf.width = this.lives*tileSize*2;
         this.heart = new Image();
         this.heart.src = "../assets/heart.png";
         this.isGameOver = false;
@@ -268,12 +268,12 @@ export default class Pacman{
 
         //reset ui ctx
         for(let i = 0;i<MAXLIVES;i++){
-            this.uictx.drawImage(this.noItem,i*tileSize,0);
+            this.uictx.drawImage(this.noItem,i*tileSize*2,0);
         }
 
         //draw the hearts
         for(let i = 0;i<this.lives;i++){
-            this.uictx.drawImage(this.heart,i*tileSize,0);
+            this.uictx.drawImage(this.heart,i*tileSize*2,0);
         }
     }
 }

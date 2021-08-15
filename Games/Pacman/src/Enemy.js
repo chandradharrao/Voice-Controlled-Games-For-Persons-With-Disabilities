@@ -1,4 +1,4 @@
-import { tileSize,oneSec, WALL,enemyVelocity,up,down,left,right, timeForFrame, powerdotHigh, powerdotLow,powerdotNil } from "./Constants.js";
+import { tileSize,oneSec, WALL,enemyVelocity,up,down,left,right, timeForFrame, powerdotHigh, powerdotLow,powerdotNil, dim } from "./Constants.js";
 
 
 export default class Enemy {
@@ -108,7 +108,22 @@ export default class Enemy {
         //reset timer if it becomes zero
         if(this.dirTimer < 0) this.dirTimer = 0;
         if(this.dirTimer == 0){
-            this.currMovDir = Math.floor(Math.random()*4);
+            //check right box
+            if(this.j+1<dim&&this.j+1>=0&&this.j+1==this.pacman.j&&this.i==this.pacman.i){
+                this.currMovDir = right;
+            }
+            else if(this.j-1<dim&&this.j-1>=0&&this.j-1==this.pacman.j&&this.i==this.pacman.i){ //left
+                this.currMovDir = left;
+            }
+            else if(this.i-1<dim&&this.i-1>=0&&this.j==this.pacman.j&&this.i-1==this.pacman.i){ //up
+                this.currMovDir = up;
+            }
+            else if(this.i+1<dim&&this.i+1>=0&&this.j==this.pacman.j&&this.i+1==this.pacman.i){ //down
+                this.currMovDir = down;
+            }
+            else{ //if not nearby
+                this.currMovDir = Math.floor(Math.random()*4);
+            }
             this.dirTimer = this.#random(1,5);
             //alert(this.dirTimer);
         };
