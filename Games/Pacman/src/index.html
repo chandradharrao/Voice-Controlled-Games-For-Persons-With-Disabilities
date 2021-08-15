@@ -8,12 +8,54 @@
     <title>PacMan</title>
 </head>
 <body>
-    <h1>PacMan</h1>
-    <canvas id="gameSurf"></canvas>
-    <br>
-    <canvas id="uiSurf"></canvas>
-    <br>
-    <h3 id="score">Score: </h3>
+    <div id="about">
+        <h1>Why PACMAN?</h1>
+        <ul>
+            <li>This Speech Recognition based PACMAN allows Persons With Disabilities to experience the CHILDHOOD blockbuster PACMAN using Intuitive Voice Commands!
+            </li>
+        </ul>
+    </div>
+
+    <div id="todo">
+        <h1>Whats Comming Next?</h1>
+        <ul>
+            <li>Procedural Level Generation for PacMan</li>
+            <li>Advanced commands:-"Up 4 Times"</li>
+            <li>More games Chrome:-T-REX,Flappy Bird!</li>
+        </ul>
+    </div>
+
+    <div id="credits">
+        Developed by
+        Chandradhar Rao!
+        <a href="https://www.linkedin.com/in/chandradhar-rao-23a0ba1b7/">
+            <span id="social-media"><img id="linkdin" src="../assets/linkedin.png" alt="linkdin profile"></span>
+        </a>
+    </div>
+
+    <div id="howto">
+        <h1>How to Play?</h1>
+        <ul id="choices-to-play">
+            <li>To use Voice Commands,Provide Permission to Microphone on the Top-Left Corner and Speak the LETTER P and Speak the below letters to Control PACMAN:
+                <ul id="controls-speech">
+                    <li>"UP" - W</li>
+                    <li>"LEFT"- A</li>
+                    <li>"DOWN"- S</li>
+                    <li>"RIGHT"- D</li>
+                </ul>
+            </li>
+            <br>
+            <li>To use WASD keyboard movement,PRESS P to Start!</li>
+        </ul>
+    </div>
+    <div id="game-container">
+        <h1 id="game-title">PacMan</h1>
+        <canvas id="gameSurf"></canvas>
+        <br>
+        <canvas id="uiSurf"></canvas>
+        <br>
+    </div>
+    <h3 id="score">Score </h3>
     <script src="Engine.js" type="module"></script>
 </body>
 </html>

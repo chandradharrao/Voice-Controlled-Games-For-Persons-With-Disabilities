@@ -62,12 +62,28 @@ export default class Pacman{
     }
 
 
-    //upon colliding with pacman
+    //upon colliding with Enemy
     handleDamage(){
         //no hurt when power dot is active
         if(this.powerdotState !== powerdotHigh && this.powerdotState !== powerdotLow){
+            //logical decrement of life
             this.lives--;
+            //hurt sound
             this.hurt.play();
+
+            //draw all the hearts
+            for(let i = 0;i<MAXLIVES;i++){
+                this.uictx.drawImage(this.heart,i*tileSize*2,0);
+            }
+
+            //draw the crossing of heart when life lost
+            let remainingLife = MAXLIVES-this.lives;
+            let drawLoc = 0;
+            while(remainingLife>0){
+                this.uictx.drawImage(this.whiteHeart,drawLoc*tileSize*2,0);
+                remainingLife--;
+                drawLoc++;
+            }
             if(this.lives === 0){
                 this.isGameOver = true;
             }
@@ -110,7 +126,7 @@ export default class Pacman{
                     this.j += velocity;
                     break;
                 default:
-                    console.log("No way this is possible...");
+                   // console.log("No way this is possible...");
                     break;
             }
         }
@@ -228,7 +244,7 @@ export default class Pacman{
     //main worker function for the PACMAN character
     work(){
         //speech command processing for pacman
-        console.log("Input speech commands " + JSON.stringify(this.inputCommands));
+        //console.log("Input speech commands " + JSON.stringify(this.inputCommands));
         //input commands given by voice
         if(this.inputCommands.length !== 0){
             let toProcessCmd = this.inputCommands.shift();
@@ -263,17 +279,7 @@ export default class Pacman{
             //alert("Score is " + this.score);
         }
         //draw the pacman
-        this.#draw();
-
-        //reset ui ctx
-        for(let i = 0;i<MAXLIVES;i++){
-            this.uictx.drawImage(this.whiteHeart,i*tileSize*2,0);
-        }
-
-        //draw the hearts
-        for(let i = 0;i<this.lives;i++){
-            this.uictx.drawImage(this.heart,i*tileSize*2,0);
-        }
+        this.#draw();  
         this.scoreTag.innerHTML = `Score:${this.score}`;
     }
 }

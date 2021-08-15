@@ -64,7 +64,7 @@ window.onload = ()=>{
         //generate some random non intersecting positions for enemy
         let spawnableIndices = tileSystem.queryNonWalls({i:pacman.i,j:pacman.j});
         let spawnIndex= spawnableIndices[Math.floor(Math.random()*spawnableIndices.length)];
-        console.log(JSON.stringify(spawnIndex));
+        //og(JSON.stringify(spawnIndex));
         
         let enemy = new Enemy(spawnIndex.spawnI,spawnIndex.spawnJ,tileSystem,ctx,pacman);
         enemies.push(enemy);
@@ -77,7 +77,7 @@ window.onload = ()=>{
     const singleWordMatch = ()=>{
         if(inptCmds.length > 0){
             let top = inptCmds.shift();
-            console.log("Shifted val from arr " + top);
+            //console.log("Shifted val from arr " + top);
             if(top === cmds.play){
                 //alert("You can play now!");
                 playSettings.start = true;
@@ -89,7 +89,7 @@ window.onload = ()=>{
     const gameLoop = () => {
         if(!playSettings.start) singleWordMatch();
         if(pacman.isGameOver == false && playSettings.start){
-            console.log("Game loop running...");
+            //console.log("Game loop running...");
             //drawings
             tileSystem.draw();
             pacman.work();
@@ -123,6 +123,9 @@ window.onload = ()=>{
             if(!pacman.isGameOver && enemies.length===0){
                 //draw game winnig screen
                 newScreen(ctx,youWin);
+                setTimeout(() => {
+                    document.location.reload();
+                }, oneSec*restartTime)
             }
 
             //loosing
@@ -140,19 +143,19 @@ window.onload = ()=>{
 
             //restart after 5 seconds
             setTimeout(() => {
-                window.location.reload();
+                document.location.reload();
             }, oneSec*restartTime);
         }else{
-            newScreen(ctx,"Press or Speak 'P' to Play!");
+            newScreen(ctx,"Speak or Press P to Play!");
         }
     }
 
     let gameThread = setInterval(gameLoop, oneSec/frameRate);
 
     const newScreen = (aCtx,txt)=>{
-        aCtx.fillStyle = "black";
+        aCtx.fillStyle = "rgb(39,39,54)";
         aCtx.fillRect(0,surf.height/2,surf.width,96);
-        aCtx.font = "40px comic sans";
+        aCtx.font = "35px comic sans MS";
         aCtx.fillStyle = "white";
         aCtx.fillText(txt,10,surf.height*0.65);
     }

@@ -10,7 +10,7 @@ export const speechEngine = (cmdStk)=>{
 
     //if speech recognition property in browser window
     if ('SpeechRecognition' in window) {
-        console.log('supported speech');
+        //console.log('supported speech');
     }else {
         console.error('speech not supported');
         return;
@@ -28,7 +28,7 @@ export const speechEngine = (cmdStk)=>{
         //lower case and remove special charavters
         res = res.toLowerCase().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
         //alert('transScript: ', res);
-        console.log("The Hashed Res " + cmds[res]);
+        //console.log("The Hashed Res " + cmds[res]);
         if(cmds[res] !== undefined){
             cmdStk.push(cmds[res]);
         }

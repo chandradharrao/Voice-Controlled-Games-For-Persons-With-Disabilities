@@ -18,7 +18,7 @@ export const frameRate = 60;
 export let speedReducer = 20;
 export const timeForFrame = 1/frameRate;
 export const oneSec = 1000; //in msec
-export const restartTime = 5;
+export const restartTime = 3;
 
 export const WALL = 1;
 export const ORB1 = 0;
@@ -48,5 +48,5 @@ export const cmds = {
     'play':keycodes.p
 };
 
-export const youLoose="GameOver..Try Again :(";
-export const youWin="You Win! Play Again?";
+export const youLoose="GameOver.Refresh Page!";
+export const youWin="You Win!Refresh Page!";

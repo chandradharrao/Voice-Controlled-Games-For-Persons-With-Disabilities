@@ -87,7 +87,7 @@ export default class Tilemap{
                 j += velocity;
                 break;
             default:
-                console.log("No way this is possible...");
+                //console.log("No way this is possible...");
                 break;
         }
         //alert("i coord " + i);
@@ -101,8 +101,8 @@ export default class Tilemap{
     }
 
     draw(){
-        console.log("Tiles drawing on");
-        console.log("ctx" + this.ctx);
+        //console.log("Tiles drawing on");
+        //console.log("ctx" + this.ctx);
         //grid col#->x coord in world
         //grid row# ->y coord in world
         for(let i = 0;i<this.visualGrid.length;i++){

@@ -89,7 +89,7 @@ export default class Enemy {
                     J += enemyVelocity;
                     break;
                 default:
-                    console.log("No way this is possible...");
+                    //console.log("No way this is possible...");
                     break;
             }
 
@@ -104,7 +104,7 @@ export default class Enemy {
 
         //manual timer to change dir
         this.dirTimer -= timeForFrame;
-        console.log(this.dirTimer);
+       // console.log(this.dirTimer);
         //reset timer if it becomes zero
         if(this.dirTimer < 0) this.dirTimer = 0;
         if(this.dirTimer == 0){
