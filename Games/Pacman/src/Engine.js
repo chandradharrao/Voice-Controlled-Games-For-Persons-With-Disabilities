@@ -4,6 +4,7 @@ import { oneSec,frameRate,difficulty, timeForFrame, infinite, powerdotNil } from
 import Enemy from "./Enemy.js";
 
 window.onload = ()=>{
+    //game Surface canvas
     const surf = document.getElementById("gameSurf");
     const ctx = surf.getContext("2d");
 
@@ -48,10 +49,13 @@ window.onload = ()=>{
     const gameLoop = () => {
         if(pacman.isGameOver == false){
             console.log("Game loop running...");
+            //drawings
             tileSystem.draw();
             pacman.work();
-            //temp array
+
+            //temp array to store surviving enemies
             let temp = [];
+            //check for enemy killed
             for(let i = 0;i<enemies.length;i++){
                 enemies[i].work();
                 //if powerdot is not active then enemy eats pacman

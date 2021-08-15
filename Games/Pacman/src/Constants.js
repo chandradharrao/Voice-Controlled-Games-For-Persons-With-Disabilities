@@ -34,3 +34,11 @@ export const keycodes = {
     's':83,
     'd':68
 }
+
+//speech commands mapped to keyboard button codes
+export const cmds = {
+    'up':keycodes.w,
+    'down':keycodes.s,
+    'left':keycodes.a,
+    'right':keycodes.d
+};

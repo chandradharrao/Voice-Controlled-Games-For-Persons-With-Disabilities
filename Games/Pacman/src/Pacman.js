@@ -1,9 +1,14 @@
 import { tileSize,up,down,left,right,keycodes,velocity, WALL, oneSec,halfTileSize, NOITEM, ORB1, powerdot, powerdotNil, powerdotHigh, powerdotLow, powerdotDangling, powerdotValidity, MAXLIVES, enemyVelocity } from "./Constants.js";
+import speechEngine from "./SpeechEngine.js";
 
 export default class Pacman{
     //x,y - world pos
     //i,j - (row#,col#) - grid indices
     constructor(ctx,i,j,tileMap,uictx,uiSurf){
+        //start speech recognition engine
+        this.inputCommands = [];
+        speechEngine(this.inputCommands);
+
         //world pos
         this.i = i;
         this.j = j;
@@ -147,10 +152,9 @@ export default class Pacman{
         this.#move();
     }
 
-    //using arrow function since we want "this" to be the pacman obj and not the dom
-    #handleKeyDown = (event)=> {
-        //alert(event.keyCode);
-        switch(event.keyCode){
+    //function with switch method to map the voice command to specific keyboard press
+    #movementSwitch(Ikeycode){
+        switch(Ikeycode){
             case keycodes.w:
                 this.#upMov();
                 break;
@@ -169,6 +173,11 @@ export default class Pacman{
                 this.chkNxtMovDir = this.currMovDir;
                 break;
         }
+    }
+    //using arrow function since we want "this" to be the pacman obj and not the dom
+    #handleKeyDown = (event)=> {
+        //alert(event.keyCode);
+        this.#movementSwitch(event.keyCode);
     }
 
     //load all the required frames of animation
@@ -219,6 +228,14 @@ export default class Pacman{
 
     //main worker function for the PACMAN character
     work(){
+        //speech command processing for pacman
+        console.log("Input speech commands " + JSON.stringify(this.inputCommands));
+        //input commands given by voice
+        if(this.inputCommands.length !== 0){
+            let toProcessCmd = this.inputCommands.shift();
+            this.#movementSwitch(toProcessCmd);
+        }
+
         //check if orb is present to be eaten
         let theTile = this.tileMap.edibleAt(this.i,this.j);
         if(theTile!=null){
