@@ -1,13 +1,11 @@
-import { tileSize,up,down,left,right,keycodes,velocity, WALL, oneSec,halfTileSize, NOITEM, ORB1, powerdot, powerdotNil, powerdotHigh, powerdotLow, powerdotDangling, powerdotValidity, MAXLIVES, enemyVelocity } from "./Constants.js";
-import speechEngine from "./SpeechEngine.js";
+import { tileSize,up,down,left,right,keycodes,velocity, WALL, oneSec,halfTileSize, NOITEM, ORB1, powerdot, powerdotNil, powerdotHigh, powerdotLow, powerdotDangling, powerdotValidity, MAXLIVES} from "./Constants.js";
 
 export default class Pacman{
     //x,y - world pos
     //i,j - (row#,col#) - grid indices
-    constructor(ctx,i,j,tileMap,uictx,uiSurf){
+    constructor(ctx,i,j,tileMap,uictx,uiSurf,inptCmds){
         //start speech recognition engine
-        this.inputCommands = [];
-        //speechEngine(this.inputCommands);
+        this.inputCommands = inptCmds;
 
         //world pos
         this.i = i;
@@ -43,7 +41,7 @@ export default class Pacman{
         this.scoreTag = document.getElementById("score");
 
         //audio files
-        //this.munch = new Audio("../assets/munch.wav");
+        this.munch = new Audio("../assets/munch.wav");
         this.powerup = new Audio("../assets/powerdot.wav");
 
         //when pacman has eaten power dot,it scares the enemies
@@ -245,11 +243,11 @@ export default class Pacman{
             //increment the score
             switch(theTile){
                 case ORB1:
-                    // this.munch.play();
+                    this.munch.play();
                     this.score++;
                     break;
                 case powerdot:
-                    //this.powerup.play();
+                    this.powerup.play();
                     this.powerdotState = powerdotHigh;
                     //after 3 seconds,powerdot starts to become low effect
                     setTimeout(() => {

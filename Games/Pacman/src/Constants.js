@@ -15,6 +15,7 @@ export const infinite=Math.pow(10, 1000);
 export const MAXLIVES = 3;
 
 export const frameRate = 60;
+export let speedReducer = 20;
 export const timeForFrame = 1/frameRate;
 export const oneSec = 1000; //in msec
 export const restartTime = 5;
@@ -34,7 +35,8 @@ export const keycodes = {
     'a':65,
     'w':87,
     's':83,
-    'd':68
+    'd':68,
+    'p':80
 }
 
 //speech commands mapped to keyboard button codes
@@ -42,8 +44,9 @@ export const cmds = {
     'up':keycodes.w,
     'down':keycodes.s,
     'left':keycodes.a,
-    'right':keycodes.d
+    'right':keycodes.d,
+    'play':keycodes.p
 };
 
-export const youLoose="GameOver..Try Again in ";
+export const youLoose="GameOver..Try Again :(";
 export const youWin="You Win! Play Again?";

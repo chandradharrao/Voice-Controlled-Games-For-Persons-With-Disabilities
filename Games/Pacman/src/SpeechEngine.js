@@ -1,6 +1,10 @@
 import {cmds} from './Constants.js'
 
-export default function speechEngine(cmdStk){
+let count = 0;
+
+export const speechEngine = (cmdStk)=>{
+    count++;
+    //alert(" count= " + count);
     //speech recognition variable
     window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
 
@@ -24,11 +28,17 @@ export default function speechEngine(cmdStk){
         //lower case and remove special charavters
         res = res.toLowerCase().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
         //alert('transScript: ', res);
-        console.log("The Hshed Res " + cmds[res]);
+        console.log("The Hashed Res " + cmds[res]);
         if(cmds[res] !== undefined){
             cmdStk.push(cmds[res]);
         }
     }
     
     recognition.start();
+
+    recognition.onend = function () {
+        count--;
+       // alert(" count= " + count);
+    }
 }
+

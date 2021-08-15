@@ -1,9 +1,20 @@
 import Pacman from "./Pacman.js";
 import Tilemap from "./Tilemap.js";
-import { oneSec,frameRate,difficulty, timeForFrame, infinite, powerdotNil, restartTime, youLoose, youWin } from "./Constants.js"
+import { oneSec,frameRate,difficulty, timeForFrame, infinite, powerdotNil, restartTime, youLoose, youWin, keycodes, cmds, speedReducer } from "./Constants.js"
 import Enemy from "./Enemy.js";
+import {speechEngine} from "./SpeechEngine.js"
 
 window.onload = ()=>{
+    //speech recognition
+    let inptCmds = [];
+    speechEngine(inptCmds)
+
+    //listen for play
+    let playSettings={
+        //start?
+        start:false
+    }
+
     //game Surface canvas
     const surf = document.getElementById("gameSurf");
     const ctx = surf.getContext("2d");
@@ -14,7 +25,7 @@ window.onload = ()=>{
     //alert(uictx)
 
     const tileSystem = new Tilemap(ctx);
-    const pacman = new Pacman(ctx,null,null,tileSystem,uictx,uiSurf);
+    const pacman = new Pacman(ctx,null,null,tileSystem,uictx,uiSurf,inptCmds);
 
     //create an array of enemies
     let enemies = [];
@@ -36,8 +47,18 @@ window.onload = ()=>{
     let playOnce = true;
     let timeBetwenLastCollission = infinite;
 
+    //start game
+    const keydownHandler = (event)=>{
+        if(event.keyCode === keycodes.p){
+            //play!
+            playSettings.start = true;
+        }
+    }
+    //attach event listener for start of game
+    document.addEventListener("keydown",keydownHandler);
+
     //eating enemy sound
-    let eatEnemy = new Audio("../assets/eatenemy.mp3");
+    let eatEnemy = new Audio("../assets/eatenemy.wav");
 
     for(let i = 0;i<numEnemies;i++){
         //generate some random non intersecting positions for enemy
@@ -52,8 +73,22 @@ window.onload = ()=>{
     //resize the canvas according to designed map
     tileSystem.setSurfSize(surf);
 
+    //recognize play in the beggening
+    const singleWordMatch = ()=>{
+        if(inptCmds.length > 0){
+            let top = inptCmds.shift();
+            console.log("Shifted val from arr " + top);
+            if(top === cmds.play){
+                //alert("You can play now!");
+                playSettings.start = true;
+                speedReducer *= 4;
+            }
+        }
+    }
+
     const gameLoop = () => {
-        if(pacman.isGameOver == false){
+        if(!playSettings.start) singleWordMatch();
+        if(pacman.isGameOver == false && playSettings.start){
             console.log("Game loop running...");
             //drawings
             tileSystem.draw();
@@ -99,7 +134,7 @@ window.onload = ()=>{
                 }
             }
             timeBetwenLastCollission += timeForFrame;
-        }else{
+        }else if(pacman.isGameOver){
             //draw gameover screen
             newScreen(ctx,youLoose);
 
@@ -107,6 +142,8 @@ window.onload = ()=>{
             setTimeout(() => {
                 window.location.reload();
             }, oneSec*restartTime);
+        }else{
+            newScreen(ctx,"Press or Speak 'P' to Play!");
         }
     }
 
