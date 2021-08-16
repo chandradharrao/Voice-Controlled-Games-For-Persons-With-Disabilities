@@ -37,7 +37,6 @@ Web Speech API abstracts the native Speech Recognition Module provided by differ
 
 Samples
 
-<p align="center">
-  <img src="/Games/Pacman/assets/sample1.png" width="350" title="Sample1">
-  <img src="/Games/Pacman/assets/sample2.png" width="350" alt="Sample2t">
-</p>
+![alt text](https://github.com/chandradharrao/Voice-Controlled-Games-For-Persons-With-Disabilities/blob/main/Games/Pacman/assets/sample1.PNG?raw=true)
+
+![alt text](https://github.com/chandradharrao/Voice-Controlled-Games-For-Persons-With-Disabilities/blob/main/Games/Pacman/assets/sample2.PNG?raw=true)
