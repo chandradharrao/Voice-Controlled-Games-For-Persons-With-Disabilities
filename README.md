@@ -37,7 +37,7 @@ Web Speech API abstracts the native Speech Recognition Module provided by differ
 
 Samples
 
-![plot](./Games/Pacman/assets/sample1.png)
-
-![plot](./Games/Pacman/assets/sample2.png)
-
+<p align="center">
+  <img src="/Games/Pacman/assets/sample1.png" width="350" title="Sample1">
+  <img src="/Games/Pacman/assets/sample2.png" width="350" alt="Sample2t">
+</p>
